@@ -24,6 +24,7 @@ public class SystemMainSwimmingV4 : MonoBehaviour
 
     [Header("Game Over Settings")]
     public GameObject gameOverObject;
+    public GameObject withoutOxygen;
     public float gameOverDelay = 15f;
     private bool isGameOver;
 
@@ -46,6 +47,7 @@ public class SystemMainSwimmingV4 : MonoBehaviour
         oxygenSlider.maxValue = maxOxygen;
         oxygenSlider.value = currentOxygen;
         oxygenWarningObject.SetActive(false);
+        withoutOxygen.SetActive(false);
         gameOverObject.SetActive(false);
         victoryObject.SetActive(false);
         pauseObject.SetActive(false);
@@ -80,7 +82,8 @@ public class SystemMainSwimmingV4 : MonoBehaviour
                 {
                     if (!isGameOver)
                     {
-                        GameOver();
+                        //GameOver();
+                        GameOverForWithoutOxygen();
                     }
                 }
 
@@ -137,14 +140,24 @@ public class SystemMainSwimmingV4 : MonoBehaviour
     {
         isGameOver = true;
         gameOverObject.SetActive(true);
-        StartCoroutine(RestartScene(gameOverDelay));
+        isBreathing = false;
+        //StartCoroutine(RestartScene(gameOverDelay));
+        //RestartSceneV2();
+    }
+    public void GameOverForWithoutOxygen()
+    {
+        isGameOver = true;
+        withoutOxygen.SetActive(true);
+        isBreathing = false;
     }
 
     public void Victory()
     {
         isVictory = true;
         victoryObject.SetActive(true);
-        StartCoroutine(RestartScene(victoryDelay));
+        isBreathing = false;
+        //StartCoroutine(RestartScene(victoryDelay));
+        //RestartSceneV2();
     }
 
     void JumpIntoWater()
@@ -170,6 +183,11 @@ public class SystemMainSwimmingV4 : MonoBehaviour
     IEnumerator RestartScene(float delay)
     {
         yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void RestartSceneV2()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
